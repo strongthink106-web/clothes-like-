@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aurelia — Restaurant, Café &amp; Resort</title>
+<meta name="description" content="Aurelia is a luxury restaurant, specialty café and boutique resort. Explore the menu, order online, book private villas and reserve your table.">
+<meta property="og:title" content="Aurelia — Restaurant, Café & Resort">
+<meta property="og:description" content="Fine dining, specialty coffee and private villas in one sanctuary.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b0b0c'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle' fill='%23d6b56b' font-family='Georgia,serif'%3EA%3C/text%3E%3C/svg%3E">
+<script src="theme.js"></script>
+<!--
+  Styles: style.css is Tailwind compiled from this file (no "development only" CDN warning, faster first paint).
+  Prefer the Tailwind CDN while experimenting? Replace the <link> below with:
+  <script src="https://cdn.tailwindcss.com"></script>  (and move tailwind.config.js settings into a <script> tailwind.config = {...})
+-->
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"Restaurant","name":"Aurelia","servesCuisine":["International","Café"],"priceRange":"$$$","telephone":"+1 555 010 2030","address":"12 Seaview Road, Your City"},
+ {"@type":"LodgingBusiness","name":"Aurelia Resort","telephone":"+1 555 010 2030","address":"12 Seaview Road, Your City"}]}
+</script>
+</head>
+<body class="bg-bg font-sans text-fg antialiased">
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ============ NAVIGATION ============ -->
+<header id="nav" class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-all duration-300" style="padding-top:env(safe-area-inset-top,0px)">
+  <nav class="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8" aria-label="Main">
+    <a href="#home" class="font-serif text-2xl tracking-tight" data-cfg="name" aria-label="Home">Aurelia</a>
+    <ul class="hidden items-center gap-1 lg:flex" id="navLinks">
+      <li><a class="nav-link rounded-full px-4 py-2 text-sm font-medium opacity-80 transition hover:opacity-100" href="#home">Home</a></li>
+      <li><a class="nav-link rounded-full px-4 py-2 text-sm font-medium opacity-80 transition hover:opacity-100" href="#menu">Menu</a></li>
+      <li><a class="nav-link rounded-full px-4 py-2 text-sm font-medium opacity-80 transition hover:opacity-100" href="#rooms">Resort Rooms</a></li>
+      <li><a class="nav-link rounded-full px-4 py-2 text-sm font-medium opacity-80 transition hover:opacity-100" href="#about">About Us</a></li>
+      <li><a class="nav-link rounded-full px-4 py-2 text-sm font-medium opacity-80 transition hover:opacity-100" href="#gallery">Gallery</a></li>
+      <li><a class="nav-link rounded-full px-4 py-2 text-sm font-medium opacity-80 transition hover:opacity-100" href="#contact">Contact / Booking</a></li>
+    </ul>
+    <div class="flex items-center gap-2">
+      <button id="themeBtn" class="grid h-10 w-10 place-items-center rounded-full border border-line transition hover:bg-soft" aria-label="Toggle light / dark theme">
+        <svg class="h-5 w-5 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+        <svg class="hidden h-5 w-5 dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button id="cartBtn" class="relative grid h-10 w-10 place-items-center rounded-full border border-line transition hover:bg-soft" aria-label="Open your order">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8a3 3 0 016 0"/></svg>
+        <span id="cartBadge" class="absolute -right-1 -top-1 hidden min-w-[20px] rounded-full bg-gold px-1.5 text-center text-[11px] font-bold leading-5 text-black">0</span>
+      </button>
+      <a href="#contact" class="btn btn-gold hidden !px-5 !py-2.5 text-sm sm:inline-flex" data-book="table">Reserve</a>
+      <button id="menuBtn" class="grid h-10 w-10 place-items-center rounded-full border border-line lg:hidden" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- Mobile full-screen menu -->
+<div id="mobileNav" class="layer" hidden role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="scrim" data-close></div>
+  <div class="relative flex w-full flex-col bg-bg px-8 pb-10 pt-24" style="padding-top:calc(env(safe-area-inset-top,0px) + 5.5rem)">
+    <button class="absolute right-5 top-5 grid h-10 w-10 place-items-center rounded-full border border-line" data-close aria-label="Close menu"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <ul class="space-y-1 font-serif text-4xl" id="mobileLinks">
+      <li><a class="block py-3" href="#home">Home</a></li><li><a class="block py-3" href="#menu">Menu</a></li><li><a class="block py-3" href="#rooms">Resort Rooms</a></li>
+      <li><a class="block py-3" href="#about">About Us</a></li><li><a class="block py-3" href="#gallery">Gallery</a></li><li><a class="block py-3" href="#contact">Contact / Booking</a></li>
+    </ul>
+    <a href="#contact" class="btn btn-gold mt-auto" data-book="table" data-close>Book a Table</a>
+  </div>
+</div>
+
+<main id="main">
+<!-- ============ HERO ============ -->
+<section id="home" class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-black text-white">
+  <div id="heroMedia" class="absolute inset-0 -z-10" aria-hidden="true"></div>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black via-black/40 to-black/30"></div>
+  <div class="mx-auto w-full max-w-7xl px-5 pb-24 pt-40 sm:px-8 sm:pb-28">
+    <p class="eyebrow animate-rise" style="color:#d6b56b">Restaurant · Café · Resort</p>
+    <h1 class="mt-5 max-w-4xl animate-rise font-serif text-[clamp(2.8rem,8.5vw,6.5rem)] font-normal leading-[1.02] tracking-tight" style="animation-delay:.1s">Every moment,<br>beautifully crafted.</h1>
+    <p class="mt-6 max-w-xl animate-rise text-lg text-white/75 sm:text-xl" style="animation-delay:.25s">Fine dining, specialty coffee and private villas — one quiet sanctuary where the table is always set for you.</p>
+    <div class="mt-10 flex animate-rise flex-wrap gap-3" style="animation-delay:.4s">
+      <a href="#contact" class="btn btn-gold" data-book="table">Book a Table</a>
+      <a href="#rooms" class="btn btn-glass">Explore Rooms</a>
+      <a href="#menu" class="btn btn-glass">Order Now</a>
+    </div>
+    <dl class="mt-14 grid max-w-xl animate-rise grid-cols-3 gap-6 border-t border-white/15 pt-6 text-sm text-white/70" style="animation-delay:.55s">
+      <div><dt>Open daily</dt><dd class="mt-1 text-lg font-semibold text-white">7 am – 11 pm</dd></div>
+      <div><dt>Private villas</dt><dd class="mt-1 text-lg font-semibold text-white">24 suites</dd></div>
+      <div><dt>Guest rating</dt><dd class="mt-1 text-lg font-semibold text-white">4.9 ★</dd></div>
+    </dl>
+  </div>
+  <a href="#menu" class="absolute bottom-6 left-1/2 hidden -translate-x-1/2 animate-drift text-white/60 sm:block" aria-label="Scroll down"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></a>
+</section>
+
+<!-- ============ MENU ============ -->
+<section id="menu" class="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
+  <div class="reveal mx-auto max-w-2xl text-center">
+    <p class="eyebrow">The Menu</p>
+    <h2 class="mt-4 font-serif text-4xl tracking-tight sm:text-6xl">Seasonal. Honest. Unforgettable.</h2>
+    <p class="mt-5 text-lg text-mut">Cooked to order from local producers. Add your favourites to the order and we'll prepare them for dine-in, takeaway or delivery.</p>
+  </div>
+  <div class="reveal mt-12 flex flex-col items-center gap-5 sm:flex-row sm:justify-between">
+    <div id="menuTabs" class="hs -mx-5 flex max-w-[100vw] gap-1 overflow-x-auto px-5 sm:mx-0 sm:px-0" role="tablist" aria-label="Menu categories"></div>
+    <label class="relative w-full sm:w-72"><span class="sr-only">Search the menu</span>
+      <svg class="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-mut" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <input id="menuSearch" type="search" class="field !rounded-full !py-2.5 !pl-10" placeholder="Search dishes…" autocomplete="off" enterkeyhint="search">
+    </label>
+  </div>
+  <p id="menuCount" class="mt-6 text-sm text-mut" aria-live="polite"></p>
+  <div id="menuGrid" class="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" role="tabpanel"></div>
+  <p id="menuEmpty" class="mt-10 hidden rounded-3xl bg-soft p-10 text-center text-mut">No dishes match your search. Try another word or category.</p>
+</section>
+
+<!-- ============ RESORT ROOMS ============ -->
+<section id="rooms" class="bg-soft py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <p class="eyebrow">Resort Rooms &amp; Villas</p>
+      <h2 class="mt-4 font-serif text-4xl tracking-tight sm:text-6xl">Stay a little longer.</h2>
+      <p class="mt-5 text-lg text-mut">Private villas and suites with butler service, daily breakfast and the quiet you came for.</p>
+    </div>
+    <div id="roomGrid" class="mt-14 grid gap-8 lg:grid-cols-2"></div>
+    <p class="mt-8 text-center text-sm text-mut">Nightly rates shown before taxes. Check-in <span data-cfg="checkIn"></span> · Check-out <span data-cfg="checkOut"></span>.</p>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
+  <div class="grid items-center gap-14 lg:grid-cols-2">
+    <div class="reveal">
+      <p class="eyebrow">About Us</p>
+      <h2 class="mt-4 font-serif text-4xl tracking-tight sm:text-6xl">A home for slow, delicious days.</h2>
+      <p class="mt-6 text-lg leading-relaxed text-mut">Aurelia began as a small neighbourhood café with a single espresso machine and a big idea: that hospitality is a craft. Today it is a restaurant, a roastery and a private resort — still led by the same kitchen, the same people and the same obsession with detail.</p>
+      <p class="mt-4 text-lg leading-relaxed text-mut">We cook with what the land and sea offer each morning, roast our beans in small batches and design every room so that the best part of your stay is simply being there.</p>
+      <div class="mt-10 grid grid-cols-3 gap-6 border-t border-line pt-8" id="stats">
+        <div><div class="font-serif text-4xl" data-count="12" data-suffix="+">0</div><div class="mt-1 text-sm text-mut">Years of hospitality</div></div>
+        <div><div class="font-serif text-4xl" data-count="24">0</div><div class="mt-1 text-sm text-mut">Villas &amp; suites</div></div>
+        <div><div class="font-serif text-4xl" data-count="98" data-suffix="%">0</div><div class="mt-1 text-sm text-mut">Guests who return</div></div>
+      </div>
+      <p class="mt-3 text-xs text-mut">Edit these numbers and the story above to match your own business.</p>
+    </div>
+    <div class="reveal grid grid-cols-2 gap-4" id="aboutArt" style="--d:.15s"></div>
+  </div>
+  <div class="mt-20 grid gap-6 md:grid-cols-3">
+    <div class="reveal rounded-3xl bg-soft p-8"><div class="font-serif text-2xl">Craft</div><p class="mt-3 text-mut">Every plate, cup and room is made with patience — nothing rushed, nothing generic.</p></div>
+    <div class="reveal rounded-3xl bg-soft p-8" style="--d:.1s"><div class="font-serif text-2xl">Sourcing</div><p class="mt-3 text-mut">Local farms, day-boat fish and small-batch roasters. We know the names behind our ingredients.</p></div>
+    <div class="reveal rounded-3xl bg-soft p-8" style="--d:.2s"><div class="font-serif text-2xl">Hospitality</div><p class="mt-3 text-mut">Warm, unhurried service that anticipates what you need before you ask.</p></div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section id="gallery" class="bg-soft py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <p class="eyebrow">Gallery</p>
+      <h2 class="mt-4 font-serif text-4xl tracking-tight sm:text-6xl">A glimpse inside.</h2>
+    </div>
+    <div id="galleryTabs" class="reveal hs mt-10 flex justify-center gap-1 overflow-x-auto" role="tablist" aria-label="Gallery categories"></div>
+    <div id="galleryGrid" class="mt-10 grid auto-rows-[180px] grid-cols-2 gap-3 sm:auto-rows-[220px] sm:gap-4 lg:grid-cols-4"></div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section id="reviews" class="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
+  <div class="reveal flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+    <div><p class="eyebrow">Guest Stories</p><h2 class="mt-4 font-serif text-4xl tracking-tight sm:text-6xl">Loved by guests.</h2></div>
+    <div class="flex items-center gap-2">
+      <button id="revPrev" class="grid h-11 w-11 place-items-center rounded-full border border-line transition hover:bg-soft" aria-label="Previous review"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <button id="revNext" class="grid h-11 w-11 place-items-center rounded-full border border-line transition hover:bg-soft" aria-label="Next review"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+  </div>
+  <div id="revTrack" class="hs mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth" tabindex="0" aria-label="Customer reviews"></div>
+  <div id="revDots" class="mt-6 flex justify-center gap-2" aria-hidden="true"></div>
+  <p class="mt-6 text-center text-xs text-mut">Sample reviews — replace them with real guest feedback.</p>
+</section>
+
+<!-- ============ CONTACT / BOOKING ============ -->
+<section id="contact" class="bg-soft py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <p class="eyebrow">Contact &amp; Booking</p>
+      <h2 class="mt-4 font-serif text-4xl tracking-tight sm:text-6xl">Reserve your moment.</h2>
+      <p class="mt-5 text-lg text-mut">Book a table or ask about a stay — we reply within a few hours.</p>
+    </div>
+    <div class="mt-14 grid gap-8 lg:grid-cols-2">
+      <!-- Info column -->
+      <div class="reveal space-y-6">
+        <div class="rounded-3xl bg-card p-7 shadow-sm">
+          <h3 class="font-serif text-2xl">Find us</h3>
+          <p class="mt-3 text-mut" data-cfg="address"></p>
+          <p class="mt-4"><a class="font-semibold underline-offset-4 hover:underline" data-cfg-href="tel" data-cfg="phone"></a></p>
+          <p class="mt-1"><a class="text-mut underline-offset-4 hover:underline" data-cfg-href="mail" data-cfg="email"></a></p>
+          <div class="mt-5 flex flex-wrap gap-3">
+            <a id="waBtn" target="_blank" rel="noopener" class="btn !bg-[#25D366] !text-black"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11 11 0 003.4 17.3L2 22l4.8-1.3A11 11 0 1020.5 3.5zM12 20a9 9 0 01-4.6-1.3l-.3-.2-2.8.8.8-2.7-.2-.3A9 9 0 1112 20zm5-6.7c-.3-.1-1.6-.8-1.8-.9s-.4-.1-.6.1-.7.9-.8 1-.3.2-.6.1a7.3 7.3 0 01-3.6-3.1c-.3-.4.3-.4.8-1.4.1-.2 0-.3 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.7 11.9 11.9 0 004.6 4.1c1.7.7 2.4.8 3.2.7a2.7 2.7 0 001.8-1.3 2.2 2.2 0 00.2-1.3c-.1-.1-.3-.2-.6-.3z"/></svg>WhatsApp us</a>
+            <span id="socials" class="flex gap-2"></span>
+          </div>
+        </div>
+        <div class="rounded-3xl bg-card p-7 shadow-sm">
+          <div class="flex items-center justify-between"><h3 class="font-serif text-2xl">Opening hours</h3><span id="openNow" class="rounded-full px-3 py-1 text-xs font-semibold"></span></div>
+          <dl id="hours" class="mt-4 divide-y divide-line text-sm"></dl>
+        </div>
+        <div class="overflow-hidden rounded-3xl bg-card shadow-sm">
+          <div id="mapBox" class="relative grid h-72 place-items-center overflow-hidden bg-[#d9e2d0] dark:bg-[#1c2a23]">
+            <svg class="absolute inset-0 h-full w-full opacity-60" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g stroke="#fff" stroke-width="10" opacity=".7" fill="none"><path d="M-10 90q120 30 220-20t220 40"/><path d="M60 -10q30 120 110 170t80 160"/><path d="M300 -10q-40 110 20 180"/></g><g stroke="#fff" stroke-width="4" opacity=".5" fill="none"><path d="M-10 200q140-30 260 20"/><path d="M130 -10q-20 90 40 130"/></g></svg>
+            <div class="relative text-center">
+              <div class="mx-auto grid h-12 w-12 place-items-center rounded-full bg-gold text-black shadow-lg"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 119.5 9 2.5 2.5 0 0112 11.5z"/></svg></div>
+              <div class="mt-3 flex flex-wrap justify-center gap-2">
+                <button id="mapLoad" class="btn btn-gold !px-4 !py-2 text-sm">Load interactive map</button>
+                <a id="mapOpen" target="_blank" rel="noopener" class="btn !bg-card !px-4 !py-2 text-sm !text-fg shadow">Open in Google Maps</a>
+              </div>
+              <p class="mt-3 text-xs text-black/60 dark:text-white/60">The map loads only when you ask — faster page, more privacy.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Booking forms -->
+      <div class="reveal rounded-3xl bg-card p-6 shadow-sm sm:p-9" style="--d:.1s">
+        <div class="inline-flex rounded-full bg-soft p-1" role="tablist" aria-label="Booking type">
+          <button class="tab" role="tab" id="tabTable" aria-selected="true" aria-controls="panelTable">Reserve a Table</button>
+          <button class="tab" role="tab" id="tabRoom" aria-selected="false" aria-controls="panelRoom" tabindex="-1">Book a Room</button>
+        </div>
+        <form id="panelTable" class="mt-7 grid gap-5 sm:grid-cols-2" role="tabpanel" aria-labelledby="tabTable" novalidate>
+          <div class="sm:col-span-2"><label class="lbl" for="t_name">Full name *</label><input class="field" id="t_name" name="name" autocomplete="name" required><div class="err" data-err="name"></div></div>
+          <div><label class="lbl" for="t_phone">Phone / WhatsApp *</label><input class="field" id="t_phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required><div class="err" data-err="phone"></div></div>
+          <div><label class="lbl" for="t_email">Email</label><input class="field" id="t_email" name="email" type="email" autocomplete="email"><div class="err" data-err="email"></div></div>
+          <div><label class="lbl" for="t_date">Date *</label><input class="field" id="t_date" name="date" type="date" required><div class="err" data-err="date"></div></div>
+          <div><label class="lbl" for="t_time">Time *</label><select class="field" id="t_time" name="time" required></select><div class="err" data-err="time"></div></div>
+          <div><label class="lbl" for="t_guests">Guests *</label><select class="field" id="t_guests" name="guests"></select></div>
+          <div><label class="lbl" for="t_occ">Occasion</label><select class="field" id="t_occ" name="occasion"><option value="">None</option><option>Birthday</option><option>Anniversary</option><option>Business</option><option>Romantic dinner</option><option>Family gathering</option></select></div>
+          <div class="sm:col-span-2"><label class="lbl" for="t_notes">Special requests</label><textarea class="field" id="t_notes" name="notes" rows="3" maxlength="500" placeholder="Allergies, seating preference…"></textarea></div>
+          <input class="hidden" tabindex="-1" autocomplete="off" name="bot-field" aria-hidden="true">
+          <div class="sm:col-span-2"><button class="btn btn-gold w-full" type="submit">Request reservation</button><p class="mt-3 text-center text-xs text-mut">Your request is sent to our team. We'll confirm by phone or WhatsApp.</p></div>
+        </form>
+        <form id="panelRoom" class="mt-7 hidden grid gap-5 sm:grid-cols-2" role="tabpanel" aria-labelledby="tabRoom" novalidate></form>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="border-t border-line py-12">
+  <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-5 text-sm text-mut sm:flex-row sm:px-8">
+    <div><span class="font-serif text-xl text-fg" data-cfg="name">Aurelia</span><span class="ml-3">© <span id="yr"></span> · All rights reserved</span></div>
+    <ul class="flex flex-wrap justify-center gap-5"><li><a href="#menu" class="hover:text-fg">Menu</a></li><li><a href="#rooms" class="hover:text-fg">Rooms</a></li><li><a href="#gallery" class="hover:text-fg">Gallery</a></li><li><a href="#contact" class="hover:text-fg">Contact</a></li></ul>
+  </div>
+</footer>
+
+<!-- ============ CART DRAWER ============ -->
+<div id="cart" class="layer" hidden role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+  <div class="scrim" data-close></div>
+  <aside class="drawer-panel relative flex h-full w-full max-w-md flex-col bg-bg shadow-2xl" style="padding-bottom:env(safe-area-inset-bottom,0px)">
+    <div class="flex items-center justify-between border-b border-line px-6 py-5">
+      <h2 id="cartTitle" class="font-serif text-2xl">Your order</h2>
+      <button class="grid h-10 w-10 place-items-center rounded-full border border-line" data-close aria-label="Close order"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="flex-1 overflow-y-auto px-6 py-4" id="cartBody">
+      <ul id="cartList" class="divide-y divide-line"></ul>
+      <div id="cartEmpty" class="py-16 text-center text-mut"><div class="font-serif text-2xl text-fg">Your order is empty</div><p class="mt-2">Add a dish from the menu to begin.</p><a href="#menu" data-close class="btn btn-gold mt-6">Browse the menu</a></div>
+      <form id="orderForm" class="mt-6 hidden space-y-4" novalidate>
+        <div role="radiogroup" aria-label="Order type" class="grid grid-cols-3 gap-2 rounded-2xl bg-soft p-1 text-sm font-semibold" id="orderType">
+          <label class="cursor-pointer"><input class="peer sr-only" type="radio" name="type" value="Dine-in" checked><span class="block rounded-xl py-2 text-center text-mut peer-checked:bg-card peer-checked:text-fg peer-checked:shadow peer-focus-visible:outline">Dine-in</span></label>
+          <label class="cursor-pointer"><input class="peer sr-only" type="radio" name="type" value="Takeaway"><span class="block rounded-xl py-2 text-center text-mut peer-checked:bg-card peer-checked:text-fg peer-checked:shadow peer-focus-visible:outline">Takeaway</span></label>
+          <label class="cursor-pointer"><input class="peer sr-only" type="radio" name="type" value="Delivery"><span class="block rounded-xl py-2 text-center text-mut peer-checked:bg-card peer-checked:text-fg peer-checked:shadow peer-focus-visible:outline">Delivery</span></label>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="lbl" for="o_name">Name *</label><input class="field" id="o_name" name="name" autocomplete="name" required><div class="err" data-err="name"></div></div>
+          <div><label class="lbl" for="o_phone">Phone *</label><input class="field" id="o_phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required><div class="err" data-err="phone"></div></div>
+        </div>
+        <div id="o_tableWrap"><label class="lbl" for="o_table">Table number (optional)</label><input class="field" id="o_table" name="table" maxlength="10"></div>
+        <div id="o_addrWrap" class="hidden"><label class="lbl" for="o_addr">Delivery address *</label><textarea class="field" id="o_addr" name="address" rows="2" maxlength="250"></textarea><div class="err" data-err="address"></div></div>
+        <div><label class="lbl" for="o_notes">Notes</label><textarea class="field" id="o_notes" name="notes" rows="2" maxlength="300" placeholder="Allergies, cooking preference…"></textarea></div>
+        <input class="hidden" tabindex="-1" autocomplete="off" name="bot-field" aria-hidden="true">
+      </form>
+    </div>
+    <div class="border-t border-line bg-bg px-6 py-5" id="cartFoot" hidden>
+      <dl class="space-y-1 text-sm"><div class="flex justify-between text-mut"><dt>Subtotal</dt><dd id="cSub"></dd></div><div class="flex justify-between text-mut" id="cSvcRow" hidden><dt id="cSvcLbl"></dt><dd id="cSvc"></dd></div><div class="flex justify-between pt-2 text-lg font-semibold"><dt>Total</dt><dd id="cTotal"></dd></div></dl>
+      <button id="placeOrder" class="btn btn-gold mt-4 w-full" type="button">Place order</button>
+      <button id="clearCart" class="mt-2 w-full py-2 text-sm text-mut underline-offset-4 hover:underline" type="button">Clear order</button>
+    </div>
+  </aside>
+</div>
+
+<!-- ============ ROOM BOOKING MODAL ============ -->
+<div id="roomModal" class="layer overflow-y-auto" hidden role="dialog" aria-modal="true" aria-labelledby="rmTitle">
+  <div class="scrim" data-close></div>
+  <div class="modal-panel relative my-6 w-[min(94vw,640px)] rounded-3xl bg-bg p-6 shadow-2xl sm:p-9">
+    <button class="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full border border-line" data-close aria-label="Close"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <p class="eyebrow">Room enquiry</p>
+    <h2 id="rmTitle" class="mt-2 font-serif text-3xl">Book your stay</h2>
+    <form id="roomModalForm" class="mt-6 grid gap-5 sm:grid-cols-2" novalidate></form>
+  </div>
+</div>
+
+<!-- ============ RESULT / CONFIRMATION MODAL ============ -->
+<div id="resultModal" class="layer" hidden role="dialog" aria-modal="true" aria-labelledby="rsTitle">
+  <div class="scrim" data-close></div>
+  <div class="modal-panel relative w-[min(92vw,460px)] rounded-3xl bg-bg p-8 text-center shadow-2xl">
+    <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-gold/20 text-gold" style="background:color-mix(in srgb,var(--gold) 18%,transparent)"><svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></div>
+    <h2 id="rsTitle" class="mt-5 font-serif text-3xl"></h2>
+    <p id="rsMsg" class="mt-3 text-mut"></p>
+    <div id="rsActions" class="mt-7 flex flex-col gap-3"></div>
+    <button class="mt-4 text-sm text-mut underline-offset-4 hover:underline" data-close>Close</button>
+  </div>
+</div>
+
+<!-- ============ GALLERY LIGHTBOX ============ -->
+<div id="lightbox" class="layer" hidden role="dialog" aria-modal="true" aria-label="Gallery viewer">
+  <div class="scrim !bg-black/90" data-close></div>
+  <figure class="modal-panel relative w-[min(94vw,980px)]">
+    <div id="lbArt" class="aspect-[4/3] overflow-hidden rounded-3xl"></div>
+    <figcaption id="lbCap" class="mt-4 text-center text-white/80"></figcaption>
+    <button id="lbPrev" class="absolute left-2 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-black/50 text-white backdrop-blur" aria-label="Previous"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <button id="lbNext" class="absolute right-2 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-black/50 text-white backdrop-blur" aria-label="Next"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>
+    <button class="absolute -top-14 right-0 grid h-11 w-11 place-items-center rounded-full bg-white/15 text-white backdrop-blur" data-close aria-label="Close"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </figure>
+</div>
+
+<!-- ============ NETLIFY FORMS (detected at deploy; real submissions arrive in your Netlify dashboard) ============ -->
+<form name="table-reservation" data-netlify="true" netlify-honeypot="bot-field" hidden><input name="form-name" value="table-reservation"><input name="name"><input name="phone"><input name="email"><input name="date"><input name="time"><input name="guests"><input name="occasion"><textarea name="notes"></textarea><input name="bot-field"></form>
+<form name="room-booking" data-netlify="true" netlify-honeypot="bot-field" hidden><input name="form-name" value="room-booking"><input name="name"><input name="phone"><input name="email"><input name="room"><input name="checkin"><input name="checkout"><input name="guests"><input name="estimate"><textarea name="notes"></textarea><input name="bot-field"></form>
+<form name="food-order" data-netlify="true" netlify-honeypot="bot-field" hidden><input name="form-name" value="food-order"><input name="name"><input name="phone"><input name="type"><input name="table"><input name="address"><textarea name="notes"></textarea><textarea name="order"></textarea><input name="total"><input name="bot-field"></form>
+
+<script src="app.js" defer></script>
+</body>
+</html>
